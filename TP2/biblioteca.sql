@@ -19,19 +19,17 @@ CREATE TABLE Autor (
 
 CREATE TABLE Libro (
   ISBN      VARCHAR(13)     NOT NULL,
-  título    VARCHAR(50)     NOT NULL,
+  título    VARCHAR(60)     NOT NULL,
   editorial VARCHAR(20)     NOT NULL,
   precio    DOUBLE UNSIGNED NOT NULL, -- existe MONEY tambien
   PRIMARY KEY (ISBN)
 );
 
 CREATE TABLE Escribe (
-  id    INT     NOT NULL,
-  ISBN  INT     NOT NULL,
-  año   YEAR    NOT NULL, -- is this ok? (sino INT)
-  PRIMARY KEY (id, ISBN),
-  FOREIGN KEY (id) REFERENCES Autor(id) ON UPDATE CASCADE ON DELETE CASCADE,
-  FOREIGN KEY (ISBN) REFERENCES Libro(ISBN) ON UPDATE CASCADE ON DELETE CASCADE,
+  id    INT         NOT NULL REFERENCES Autor(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  ISBN  VARCHAR(13) NOT NULL REFERENCES Libro(ISBN) ON DELETE CASCADE ON UPDATE CASCADE,
+  año   YEAR        NOT NULL, -- is this ok? (sino INT)
+  PRIMARY KEY (id, ISBN)
 );
 
 /* EJERCICIO 2 */
@@ -55,8 +53,8 @@ INSERT INTO Libro VALUES ("9780857501004", 'A brief history of time', 'Bantam Bo
 INSERT INTO Libro VALUES ("0130183806", 'Redes Globales de Información con Internet y TCP/IP', 'Prentice Hall', 4195);
 INSERT INTO Libro VALUES ("9789505116362", 'El reino del revés', 'Alfaguara', 1350);
 
-INSERT INTO Escribe VALUES ((SLECT id FROM Empleado WHERE nombre = 'Stephen' AND apellido = 'Hawking'), 9780857501004, 2016);
-INSERT INTO Escribe VALUES ((SLECT id FROM Empleado WHERE nombre = 'María Elena' AND apellido = 'Walsh'), 9789505116362, 1965);
+INSERT INTO Escribe VALUES ((SELECT id FROM Autor WHERE nombre = 'Stephen' AND apellido = 'Hawking'), "9780857501004", 2016);
+INSERT INTO Escribe VALUES ((SELECT id FROM Autor WHERE nombre = 'María Elena' AND apellido = 'Walsh'), "9789505116362", 1965);
 
 
 /* EJERCICIO 4 */
@@ -70,11 +68,13 @@ WHERE editorial = 'UNR';
 UPDATE Libro
 SET precio = precio*1.1
 WHERE precio > 200 AND
-ISBN IN (SELECT ISBN FROM Escribe, Autor WHERE nacionalidad <> 'Argentina')
+ISBN IN (SELECT ISBN FROM Escribe, Autor WHERE 
+         nacionalidad <> 'Argentina' AND Escribe.id = Autor.id);
 UPDATE Libro
 SET precio = precio*1.2
 WHERE precio < 200 AND
-ISBN IN (SELECT ISBN FROM Escribe, Autor WHERE nacionalidad <> 'Argentina')
+ISBN IN (SELECT ISBN FROM Escribe, Autor WHERE 
+         nacionalidad <> 'Argentina' AND Escribe.id = Autor.id);
 
 DELETE FROM Libro
-WHERE año = 1998;
+WHERE ISBN IN (SELECT ISBN FROM Escribe WHERE año = 1998);
