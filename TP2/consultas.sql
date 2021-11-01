@@ -25,10 +25,10 @@ WHERE codigo IN (SELECT vendedor FROM Cliente
 SELECT nombre_zona, COUNT(codigo), AVG(precio) FROM Inmueble
 WHERE nombre_poblacion = 'Rosario' GROUP BY nombre_zona;
 
-
 -- Consulta f
 SELECT nombre FROM Persona 
 WHERE codigo IN (SELECT codigo_cliente FROM PrefiereZona
+                 WHERE nombre_poblacion = 'Santa Fe' 
                  GROUP BY codigo_cliente HAVING
-                 COUNT(nombre_poblacion) = (SELECT COUNT(nombre_zona) FROM Zona
+                 COUNT(nombre_zona) = (SELECT COUNT(nombre_zona) FROM Zona
                                             WHERE nombre_poblacion = 'Santa Fe'));
