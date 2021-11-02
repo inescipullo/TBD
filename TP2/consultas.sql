@@ -1,3 +1,9 @@
+/*
+Inés Cipullo C-6867/5
+Katherine Sullivan S-5436/4
+Ezequiel Bisiach B-6199/9
+*/
+
 USE `Inmobiliaria`;
 
 -- Consulta a
