@@ -34,6 +34,15 @@ CREATE TABLE Escribe (
   FOREIGN KEY (ISBN) REFERENCES Libro(ISBN) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+/* 
+  Decidimos restringir la eliminación en Autor porque si bien podríamos reflejar este cambio en Escribe,
+  en la tabla Libro nos podría quedar un libro cuyo autor haya sido eliminado. Esto implicaría que este libro no va a aparecer
+  en la tabla Escribe y por consiguiente, quedaría excluído de cualquier consulta que se haga en base a esta tabla.
+  Podremos eliminar a un autor una vez que hayamos eliminado todos sus libros (es decir, que no tenemos ninguna fila en Escribe 
+  correspondiente al autor).
+  Todas las otras modificaciones decidimos propagarlas.
+*/
+
 /* EJERCICIO 2 */
 
 CREATE INDEX apellido_autor_index ON Autor(apellido);
