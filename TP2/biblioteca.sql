@@ -1,4 +1,7 @@
 /*
+Trabajo Práctico 2 - Teoría de Bases de Datos
+
+Integrantes:
 Inés Cipullo C-6867/5
 Katherine Sullivan S-5436/4
 Ezequiel Bisiach B-6199/9
@@ -79,12 +82,15 @@ INSERT INTO Escribe VALUES ((SELECT id FROM Autor WHERE nombre = 'Pablo' AND ape
 
 /* EJERCICIO 4 */
 
+-- a)
 UPDATE Autor SET residencia = 'Buenos Aires'
 WHERE nombre = 'Abelardo' AND apellido = 'Castillo';
 
+-- b)
 UPDATE Libro SET precio = precio*1.1
 WHERE editorial = 'UNR';
 
+-- c)
 UPDATE Libro
 SET precio = precio*1.1
 WHERE precio > 200 AND
@@ -96,5 +102,6 @@ WHERE precio <= 200 AND
 ISBN IN (SELECT ISBN FROM Escribe, Autor WHERE 
          nacionalidad <> 'Argentina' AND Escribe.id = Autor.id);
 
+-- d)
 DELETE FROM Libro
 WHERE ISBN IN (SELECT ISBN FROM Escribe WHERE año = 1998);
